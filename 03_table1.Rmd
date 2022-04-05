@@ -1,0 +1,182 @@
+---
+title: "03_table1"
+author: "randy"
+date: '2022-03-22'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r "setup", include=FALSE}
+knitr::opts_chunk$set()
+rm(list=ls())
+graphics.off()
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(MASS)
+library(here)
+library(janitor)
+library(readr)
+library(nlme)
+library(data.table)
+library(gtsummary)
+library(flextable)
+library(splines)
+```
+
+
+
+```{r}
+demog <- here::here("data", "epic", "Demog.csv") %>%
+  read.csv() %>%
+  janitor::clean_names() %>%
+  dplyr::select(id = cffidno, sex, 
+         ethnic, mutation1, 
+         mutation2, race)
+epic <- here::here("data", "epic",
+                   "registration_age_min_3_4.csv") %>%
+  read.csv(row.name = 1) %>%
+  janitor::clean_names()
+
+data <- left_join(epic, demog, by = "id") %>%
+  mutate(sex = as.factor(sex)) %>%
+  mutate(genotype = case_when(mutation1 == "F508del" & mutation2 == "F508del" ~ "del/del",
+                              mutation1 != "F508del" & mutation2 == "F508del" ~ "mut/del",
+                              mutation2 != "F508del" & mutation1 == "F508del" ~ "mut/del",
+                              mutation1 != "F508del" & mutation2 != "F508del" ~ "mut/mut"))
+ID <- unique(data$id)
+length(ID) / 3
+test <- sample(ID, 457, replace = FALSE)
+
+
+data0 <- data %>%
+  mutate(group = case_when(id %in% test ~ "testing",
+                           TRUE ~ "training"))
+```
+
+```{r}
+data1 <- data0 %>%
+  group_by(id, group) %>%
+  summarize(age_mean = mean(age),
+            age_min = min(age),
+            age_max = max(age),
+            age_n = length(age),
+            h_mean = mean(ht),
+            h_max = max(ht),
+            h_min = min(ht),
+            w_mean = mean(wt),
+            w_max = max(wt),
+            w_min = min(wt),
+            sex = sex,
+            genotype = genotype,
+            ethnic = ethnic,
+            race = race) %>% 
+  ungroup() %>%
+  unique()
+
+# data0 <- data %>%
+#   group_by(id, sex, ethnic, genotype) %>%
+#   nest()
+
+
+data2 <- full_join(data1, data) %>% 
+  as.data.frame() %>%
+  mutate(time = age - age_min,
+         age_diff = age_max - age_min,
+         BMI = wt / (0.1 * ht)^2) 
+
+# head(data2)
+write.csv(data2, file = "data/epic_clean_randy.csv")
+```
+
+
+2 knots and bspline with cubic terms
+
+
+- new table1 with two columns
+
+  - include age_min & age_diff
+  - time follow up time
+  - training and testing
+  - as different label for visit times
+  - BMI, ht, wt
+  - gender, r/eth, genotype
+
+- split the data as 1/3 for testing and 2/3 for training
+  - predicted value and the real obs for each subject in the testing set.
+  - at least one observation for that individual
+
+- cross validation GCV; as extra methodology for the model fitting
+
+- use the predictive (dynamic predcition) as well as the marginal mean
+
+- use the PML methods.
+
+
+```{r}
+table1 <- data1 %>%
+  unique() %>%
+  select(-id) %>%
+  mutate(
+    ethnic = case_when(ethnic == 1 ~ "Hispanic",
+                     ethnic == 2 ~ "Non-Hispanic"),
+    race = case_when(race == 1 ~ "White",
+                     race != 1 ~ "Other"),
+    sex = case_when(sex == "F" ~ "Female",
+                    sex == "M" ~ "Male"),
+    age_diff = age_max - age_min) %>%
+  select(group,
+         Genotype = genotype,
+         Gender = sex,
+         Race = race,
+         Ethnicity = ethnic,
+         "Age mean" = age_mean, 
+         "Age min" = age_min, 
+         "Age diff" = age_diff,
+         "Age max" = age_max, 
+         "Height mean" = h_mean, 
+         "Height baseline" = h_min,
+         "Weight mean" = w_mean) %>% 
+  ## select all the variables for table1
+  tbl_summary(by = group) %>%
+  ## just display all the variables in one column
+  modify_header(label = "**Variable**") %>%
+  # update the column header
+  bold_labels() %>%
+  italicize_labels() %>%
+  as_flex_table() %>%
+  flextable::bold(part = "header") %>% 
+  ## auto adjust the column widths 
+  flextable::autofit()
+
+```
+
+
+
+```{r}
+table1
+
+## save pptx -----------------------------------------------
+## flextable can be saved directly to powerpoints
+flextable::save_as_pptx(
+  table1, 
+  path = "figure/01_table1.pptx")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
