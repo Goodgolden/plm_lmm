@@ -19,6 +19,23 @@ library(nlme)
 library(data.table)
 ```
 
+```{r}
+names(full)
+
+full<- read_csv("data/epic/Reg_Encounters.csv") %>% View()
+  select(cffidno, VisitAge) %>%
+  na.omit() %>%
+  group_by(cffidno) %>%
+  arrange(VisitAge) %>% 
+  slice(1L) 
+## we just chop the age 
+## 
+
+hist(full$VisitAge)
+```
+
+
+the quantile is between 3 and 8
 
 ```{r}
 demog <- here::here("data", "epic", "Demog.csv") %>%
@@ -27,10 +44,13 @@ demog <- here::here("data", "epic", "Demog.csv") %>%
   dplyr::select(id = cffidno, sex, 
          ethnic, mutation1, 
          mutation2, race)
+
 epic <- here::here("data", "epic",
                    "registration_age_min_3_4.csv") %>%
   read.csv(row.name = 1) %>%
   janitor::clean_names()
+
+## if there is one unkwon or missing just treated as one allel.
 
 data <- left_join(epic, demog, by = "id") %>%
   mutate(genotype = case_when(mutation1 == "F508del" & mutation2 == "F508del" ~ "del/del",

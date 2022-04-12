@@ -245,7 +245,7 @@ mod2_2_4 <- lme(ht ~ bs(age, knots = c(10, 15),
                         degree = 3, intercept = FALSE) * sex +  genotype - 1,
               random = ~ 1 + age| id,
               data = data)
-summary(mod2_2_4)
+
 glance2_2_4 <- broom.mixed::glance(mod2_2_4) %>%
   mutate(model = "mod2_2_4")
 
@@ -256,7 +256,7 @@ glance2_2_0 <- broom.mixed::glance(mod2_2_0) %>%
   mutate(model = "mod2_2_0")
 
 
-predict(mod2_2_4)
+# predict(mod2_2_4)
 ```
 
 
@@ -290,7 +290,8 @@ rbind(glance1_1_0, glance1_1_1, glance1_1_2, glance1_1_3, glance1_1_4,
       glance3_1_1, glance3_1_2) %>%
   as.data.frame() %>%
   select(model, everything()) %>%
-  arrange(AIC)
+  arrange(AIC) %>%
+  knitr::kable()
 ```
 
 
@@ -301,7 +302,7 @@ mod2_2_4 <- lme(ht ~ bs(time, knots = c(15),
                   genotype - 1,
               random = ~ 1| id,
               data = data)
-summary(mod2_2_4)
+
 glance2_2_4 <- broom.mixed::glance(mod2_2_4) %>%
   mutate(model = "mod2_2_4")
 glance2_2_4
@@ -328,13 +329,21 @@ plot1 <-
 
 plot1
 ```
+AIC with one internal knot
+321377
+
+AIC with two internal knots
+316511
+
+`r 321377 - 316511` 
 
 ```{r}
 mod2_2_4 <- lme(ht ~ bs(time, knots = c(10, 15), 
-                        degree = 3, intercept = FALSE) * sex +  genotype - 1,
+                        degree = 3, 
+                        intercept = FALSE) * sex +  genotype - 1,
               random = ~ 1| id,
               data = data)
-summary(mod2_2_4)
+
 glance2_2_4 <- broom.mixed::glance(mod2_2_4) %>%
   mutate(model = "mod2_2_4")
 glance2_2_4
