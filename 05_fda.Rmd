@@ -1,0 +1,57 @@
+---
+title: "05_spline"
+author: "Randy"
+date: "1/19/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+epic_hw10 <- here::here("data", "epic",
+                      "registration_age_min_3_4.csv") %>%
+  read.csv(row.names = 1) %>%
+  filter(id %in% unlist(epic10_id))
+
+epic10_train_id <- sample_n(epic10_id, 320) 
+
+epic10_train <- epic_hw10 %>%
+  filter(id %in% unlist(epic10_train_id))
+
+epic10_test <- anti_join(epic_hw10, epic10_train)
+```
+
+```{r}
+fda_wt1 <- mgcv::gam(wt ~ s(age, bs = "cr", k = 50) + s(factor(id), bs = "cr"), 
+                  data = epic10_train)
+
+fdm_wt0 <- mgcv::gamm(wt ~ s(age, bs = "cr", k = 50), 
+                   random = list(id = ~1),
+                  data = epic10_train)
+
+fdm_wt1 <- mgcv::gamm(wt ~ s(age, bs = "cr", k = 50), 
+                   random = list(id = ~1 + age),
+                  data = epic10_train)
+
+fda_ht1 <- mgcv::gam(ht ~ s(age, bs = "cr", k = 50) + s(id, bs = "cr"), 
+                  data = epic_hw10)
+
+fdm_ht1 <- mgcv::gamm(ht ~ s(age, bs = "cr", k = 50), 
+                   random = list(id = ~1),
+                  data = epic10_train)
+plot(fda_ht1)
+plot(fdm_ht1$gam)
+plot(fda_wt1)
+plot(fdm_wt1$gam)
+```
+
+
+```{r}
+summary(fda_wt1)
+plot(fda_wt1)
+summary(fdm_wt0$lme)
+summary(fdm_wt1$lme)
+```
+

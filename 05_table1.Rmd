@@ -155,12 +155,13 @@ table1 <- data1 %>%
          Ethnicity = ethnic,
          "Visit number" = visitn,
          "Age mean" = age_mean, 
-         "Age min" = age_min, 
-         "Age diff" = age_diff,
-         "Age max" = age_max, 
+         "Age baseline" = age_min, 
+         "Age final" = age_max, 
+         "Follow up years" = age_diff,
          "Height mean" = h_mean, 
          "Height baseline" = h_min,
-         "Weight mean" = w_mean) %>% 
+         "Weight mean" = w_mean,
+         "Weight baseline" = w_min) %>% 
   ## select all the variables for table1
   tbl_summary(by = group) %>%
   ## just display all the variables in one column

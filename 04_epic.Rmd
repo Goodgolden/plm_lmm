@@ -39,9 +39,10 @@ library("fields")
 epic_hw0 <- here::here("data", "epic", "Reg_Encounters.csv") %>% 
   read_csv(show_col_types = FALSE) %>%
   janitor::clean_names() %>% 
-  select(id = cffidno,  
-         age = visit_age,
-         ht, htpct, wt, wtpct) %>%
+  dplyr::select(id = cffidno,  
+                age = visit_age,
+                ht, htpct,
+                wt, wtpct) %>%
   na.omit() %>%
   # Tue Jan 04 11:14:02 2022 ------------------------------
   ## remove partial incorrect observations
@@ -87,7 +88,7 @@ id_age4 <- epic_ind0 %>%
   # filter(age_min <= 5) %>%
   ## filter with age4 1370 individuals
   ## filter with age5 1446 individuals
-  select(id) %>% 
+  dplyr::select(id) %>% 
   unlist()
 
 # length(id_age4)
@@ -106,12 +107,15 @@ epic_ind1 <- epic_hw1 %>%
             age_max = max(age),
             age_med = median(age),
             vnum = n()) %>%
-  mutate(age_diff = age_max - age_min) 
+  mutate(age_diff = age_max - age_min) %>%
+  filter(age_diff >= 5)
   # Tue Jan 04 09:34:32 2022 ------------------------------
   ## only select the visit number over 10 times
   ## 1325 individuals left so far
 
-# nrow(epic_ind)
+
+# Tue Apr 12 11:28:07 2022 ------------------------------
+# nrow(epic_ind1)
   # Tue Apr 12 08:23:10 2022 ------------------------------
   ## age difference large than 5
   # age_diff >= 5
@@ -124,7 +128,7 @@ epic_ind1 %>% filter(age_diff >= 5) %>% nrow() ## 1272
 epic_ind1 %>% filter(age_diff >= 8) %>% nrow() ## 919
 epic10_id <- epic_ind1 %>% 
   filter(age_diff >= 10) %>% 
-  select(id, )
+  dplyr::select(id, )
   ## 645
 ```
 
@@ -132,6 +136,22 @@ epic10_id <- epic_ind1 %>%
 ```{r "summary"}
 # View(epic_10_id)
 # summary(epic_ind)
+
+ggplot(data = epic_ind0, aes(vnum)) +
+  geom_freqpoly(color = "indianred") +
+  geom_histogram(fill = "blue", alpha = 0.3) +
+  theme_bw()
+
+ggplot(data = epic_ind0, aes(age_min)) +
+  geom_freqpoly(color = "indianred") +
+  geom_histogram(fill = "blue", alpha = 0.3) +
+  theme_bw()
+
+
+ggplot(data = epic_ind0, aes(age_diff)) +
+  geom_freqpoly(color = "indianred") +
+  geom_histogram(fill = "blue", alpha = 0.3) +
+  theme_bw()
 
 ggplot(data = epic_ind1, aes(vnum)) +
   geom_freqpoly(color = "indianred") +
@@ -157,6 +177,8 @@ ggplot(data = epic_ind1, aes(age_diff)) +
 nrow(epic_hw1) ## 66188
 nrow(epic_ind1) ## 1370
 summary(epic_ind1)
+
+filter(epic_ind1)
 
 write.csv(epic_hw1, file = "data/epic/registration_age_min_3_4.csv")
 ```

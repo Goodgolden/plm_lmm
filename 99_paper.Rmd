@@ -1,0 +1,21 @@
+---
+title: "99_paper"
+author: "randy"
+date: '2022-04-19'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+2. Methods
+
+2.1. Study population
+
+The EPIC Observational study, is a multicenter longitudinal ob- servational study that enrolled children with a confirmed diagno- sis of CF ≤12years of age at 59 centers with respiratory cultures negative for Pseudomonas aeruginosa (either never infected or cul- ture negative for at least 2 years). The design of the EPIC study has been previously reported [28,29]. EPIC enrolled 1797 participants between 2004 and 2006 and included both study-specific and CF Patient Registry data. The annual EPIC family survey queried par- ents/guardians on time-varying factors such as influenza vaccina- tion, exposure to cigarette smoke in the household, and hot tub and swimming pool use in previous year. Other information col- lected at every encounter included cold and cough symptoms in the previous week, use of oral antibiotics since previous visit, and whether a respiratory culture was positive for any CF related mi- croorganism (the latter from the CF Registry). The data cut-off for the current analysis was December 2013.
+
+
+Of the 1772 children enrolled in the EPIC OBS study with PEx data, we identified 1734 individuals with usable data; 38 individ- uals were excluded because of missing, after imputation by last observation carried forward, in the time-varying covariates (27), or having an either single EPIC annual survey or single EPIC en- counter (11) (Fig. 1). Out of the 1734 individuals, 1.5% (26) had 1 EPIC survey, 4.8% (84) had 2, 4.4% (76) had 3, and the remaining 89.3% (1548) had at least 4 annual EPIC surveys. A total of 5129 PEx in 788 individuals were identified after eliminating five events with length of >90 days.
+About half of the cohort was female (49%), most were Cau- casian (95%), the majority were F508del homozygous (51%), and the median weight percentile at enrollment was 36.7 (IQR: 16.5– 63.4) (Table 1). The median age at enrollment was 5.8 (IQR: 3– 8.8) years, and median length of follow-up 7.8 (IQR: 6.3–8.3) years. A total of 788 children experienced at least one PEx event dur- ing follow-up (45%), and 75% of the entire cohort experienced 2 or fewer PExs during the follow-up period.
+A qualitative comparison of results from both FEA and MEA analyses, adjusting for age at enrollment, indicate that the esti- mates from the MEA are in the same direction as FEA with higher hazards in time to first event corresponding to higher hazards of new events (Table 2). In addition, two variables (sex and influenza vaccination) were significant in the MEA model but not in the FEA model. Conversely, hot tub use in previous year is significant in the FEA, but not in the MEA. However, the association is near border- line in FEA (p=.045), but not in MEA (p=.109). Finally, the MEA model found that the risk of experiencing a subsequent PEx in- creased 2.8 times (95% CI 2.2–3.6) when there was an exacerbation within the previous 30 days.
