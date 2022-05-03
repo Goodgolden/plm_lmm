@@ -56,7 +56,8 @@ mod01 <- lme(ht ~ bs(time, knots = c(10, 15),
                         intercept = FALSE) * sex +  genotype - 1,
               random = ~ 1| id,
               data = train)
-broom::glance(mod01)
+
+broom.mixed::glance(mod01)
 ## AIC 210324.6	
 
 mod02 <- lme(ht ~ bs(time, knots = c(10), 
@@ -64,7 +65,7 @@ mod02 <- lme(ht ~ bs(time, knots = c(10),
                         intercept = FALSE) * sex +  genotype - 1,
               random = ~ 1| id,
               data = train)
-broom::glance(mod02)
+broom.mixed::glance(mod02)
 ## AIC 210845.4	
 
 
@@ -79,12 +80,13 @@ broom::glance(mod02)
 # attr(mod03$terms, "predvars")
 
 ## spline with df = nk + power
-mod04 <- lme(ht ~ bs(time,  df = 2 + 3,
+mod04 <- lme(ht ~ bs(time,  
+                     df = 2 + 3,
                     degree = 3, 
                     intercept = FALSE) * sex +  genotype - 1,
               random = ~ 1| id,
               data = train)
-glance(mod04)
+broom.mixed::glance(mod04)
 tidy(mod01) %>% knitr::kable()
 tidy(mod04) %>% knitr::kable()
 ## AIC 209881.1

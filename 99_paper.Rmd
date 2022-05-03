@@ -2,20 +2,158 @@
 title: "99_paper"
 author: "randy"
 date: '2022-04-19'
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-2. Methods
+# Introduction
 
-2.1. Study population
+The motivation for applying the broken stick model was to facilitate the statistical analysis and testing of critical ages in the onset of childhood development with extensions to multiple imputation (van Buuren 2018b).
 
-The EPIC Observational study, is a multicenter longitudinal ob- servational study that enrolled children with a confirmed diagno- sis of CF ≤12years of age at 59 centers with respiratory cultures negative for Pseudomonas aeruginosa (either never infected or cul- ture negative for at least 2 years). The design of the EPIC study has been previously reported [28,29]. EPIC enrolled 1797 participants between 2004 and 2006 and included both study-specific and CF Patient Registry data. The annual EPIC family survey queried par- ents/guardians on time-varying factors such as influenza vaccina- tion, exposure to cigarette smoke in the household, and hot tub and swimming pool use in previous year. Other information col- lected at every encounter included cold and cough symptoms in the previous week, use of oral antibiotics since previous visit, and whether a respiratory culture was positive for any CF related mi- croorganism (the latter from the CF Registry). The data cut-off for the current analysis was December 2013.
+The broken stick model fits in the latter tradition, and features an intuitive parametrisation of each individual growth curves by a series of connected straight lines.
 
+# Methods Study population
 
-Of the 1772 children enrolled in the EPIC OBS study with PEx data, we identified 1734 individuals with usable data; 38 individ- uals were excluded because of missing, after imputation by last observation carried forward, in the time-varying covariates (27), or having an either single EPIC annual survey or single EPIC en- counter (11) (Fig. 1). Out of the 1734 individuals, 1.5% (26) had 1 EPIC survey, 4.8% (84) had 2, 4.4% (76) had 3, and the remaining 89.3% (1548) had at least 4 annual EPIC surveys. A total of 5129 PEx in 788 individuals were identified after eliminating five events with length of >90 days.
-About half of the cohort was female (49%), most were Cau- casian (95%), the majority were F508del homozygous (51%), and the median weight percentile at enrollment was 36.7 (IQR: 16.5– 63.4) (Table 1). The median age at enrollment was 5.8 (IQR: 3– 8.8) years, and median length of follow-up 7.8 (IQR: 6.3–8.3) years. A total of 788 children experienced at least one PEx event dur- ing follow-up (45%), and 75% of the entire cohort experienced 2 or fewer PExs during the follow-up period.
-A qualitative comparison of results from both FEA and MEA analyses, adjusting for age at enrollment, indicate that the esti- mates from the MEA are in the same direction as FEA with higher hazards in time to first event corresponding to higher hazards of new events (Table 2). In addition, two variables (sex and influenza vaccination) were significant in the MEA model but not in the FEA model. Conversely, hot tub use in previous year is significant in the FEA, but not in the MEA. However, the association is near border- line in FEA (p=.045), but not in MEA (p=.109). Finally, the MEA model found that the risk of experiencing a subsequent PEx in- creased 2.8 times (95% CI 2.2–3.6) when there was an exacerbation within the previous 30 days.
+### General descriptions:
+
+(why it is reasonable and useful)
+
+-   **what type of study**: The EPIC Observational Study is a prospective, multicenter, observational longitudinal study
+
+-   **multiple center**: The data was collected through the Cystic Fibrosis Foundation Patient Registry (CFFPR)
+
+-   **already in use**: The design of the EPIC study has been previously reported [28,29]. Including 59 centers
+
+-   **exclusive informations**: Include demographic and risk factor data, respiratory cultures, clinical encounter information, and clinical outcomes, such as bacterial infections or pulmonary exacerbations
+
+-   **what is the goal**:
+
+-   **our goal**:
+
+### Subjects
+
+[![Table 1](figure/01_table1.png "Tables")](Supplementary%20Table%201)
+
+-   **check for time!!**: 1772 participants enrolled between *2004 and 2006*. The data cut-off for the current analysis was *December 2013*.
+
+-   The enrolled children with a confirmed diagnosis of CF before the age of 12 without exposure of *Pseudomonas aeruginosa*
+
+-   Based on either never infected or culture negative for at least 2 years); with respiratory cultures negative for *Pseudomonas aeruginosa*
+
+-   Either no prior isolation of Pseudomonas aeruginosa, or at least a two-year period with no isolation of P. aeruginosa (Treggiari et al., 2009).
+
+-   The beginning of follow-up was defined as an individual's earliest registry entry or pulmonary exacerbation
+
+-   a registry entry could have occurred before their enrollment in the EPIC Observational Study
+
+-   End of follow-up in the study was defined as a patient's latest CF registry encounter or pulmonary exacerbation.
+
+-   **sample size**: Of the **1772** children enrolled, **76497** visit observations in the EPIC OBS study
+
+-   we identified **1325** individuals with usable data
+
+-   1325 for the final data analysis
+
+-   **how many** missing or lost to-follow-up with time-varying covariates and outcomes
+
+-   **%** had one survey record, **%** had a second, and **%** had a third, and the remaining **%** had **#th** surveys.
+
+-   Total of **\# obs** in **\# subject** individuals were identified after eliminating registration age over 5
+
+-   Total of **\# obs** in **\# subject** individuals were identified after eliminating follow up time less than 5 years
+
+-   Total of **\# obs** in **\# subject** individuals were identified after eliminating avaiable visit times less than 10
+
+-   **testing/training**: randomly
+
+### Table1 Information
+
+-   half of the cohort was female (49%)
+
+-   most were Caucasian (95%)
+
+-   Our genotype of interest was defined by the number of confirmed $\Delta F508$ (`F508del`) mutations (`0`: without mutation, `1`: with one allele mutated, or `2`: with both alells mutated), where `0` included both those with both alleles missing or those with unknown status with respect to this mutation.
+
+-   Homozygosity of $\Delta F508$ ($\Delta F508/\Delta F508$)
+
+-   the most common CF-causing mutation (Cystic Fibrosis Foundation, 2016) is associated with increased risk of infection and lower lung function in CF (Rosenfeld et al., 2012, Sanders et al., 2010).
+
+-   the majority were F508del homozygous (**%**),
+
+-   the median weight percentile at enrollment was 36.7 **(IQR: )**.
+
+-   The median age at enrollment was 5.8 **(IQR: )** years
+
+-   median length of follow-up 7.8 **(IQR:)** years
+
+### Tools
+
+the **brokenstick v 2.0.0** package. The package contains tools to fit the broken stick model to data, export the fitted model's parameters, create imputed values of the model, and predict broken stick estimates for new data.
+
+## brokenstick model
+
+Substantive researchers often favour repeated measures over the use of linear mixed models because of their simplicity.
+
+For example, we can easily fit a subject-level model to predict future outcomes conditional on earlier data with repeated measures data.
+
+While such simple regression models may be less efficient than modelling the complete data (Diggle, Heagerty, Liang, and Zeger 2002, Sec. 6.1),
+
+The broken stick model requires a specification of a sensible set of time points at which the measurements ideally should have been taken.
+
+-   For each subject, the model predicts or imputes hypothetical observations at those times
+
+-   so the substantive analysis applies to the repeated measures instead of the irregular data.
+
+applications for brokenstick model:
+
+-   to approximate individual trajectories by a series of connected straight lines; • to align irregularly observed curves to a joint age grid;
+-   to impute realisations of individual trajectories;
+-   to estimate the time-to-time correlation matrix;
+-   to predict future observations.
+
+provide the examples:
+
+-   the points are close to the scheduled ages (indicated by vertical lines), especially in the first half-year.
+
+-   bservation times vary more for older children.
+
+-   several children have one or more missing visits.
+
+-   some children had fairly close visits and vary periodically
+
+-   special cases of dropped out after certain time
+
+## people-like-me methods
+
+Assumptions:
+
+-   The trajectory between break ages follows a strict linear functin. This assumption may fail for processes that are convex or concave in time. For example, human height growth in centimeters growth is concave, so setting breakpoints far apart results introduces systematic model bias. Modeling height SDS instead of raw height will prevent this bias.
+
+-   The broken stick estimates follow a joint multivariate normal distribution. As this assumption may fail for skewed measurements, it could be beneficial to transform the outcomes so that their distribution will be closer to normal.
+
+-   The data are Missing at Random (MAR) given the outcomes from all subjects at all observation times. This assumption is restrictive in the sense that missingness may only depend on the observed outcomes, and not on covariates other than time.
+
+At the same time, the assumption is liberal in the sense that the missingness may depend on future outcomes. While this MAR-future assumption is unusual in the literature on drop-out and observation time models, it is a sensible strategy for creating imputations that preserve relations over time, especially for intermittent missing data. Of course, the subsequent substantive analysis on the imputed data needs to be aware of the causal direction of time.
+
+### KR fucntion???
+
+The brokenstick package provides another alternative, the Kasim- Raudenbush (KR) sampler (Kasim and Raudenbush 1998). The method simulates draws from the posterior distributions of parameters from a two-level normal model with heterogeneous within-subject variances. The speed of the Kasim-Raudenbush sampler is almost insensitive to the number of random effects and depends primarily on the total number of iterations and somewhat on sample size.
+
+# Discussion
+
+# Reference
+
+# Supplementary
+
+[![Supplementary Table 1](figure/01_table0.png "Tables")](Table%201)
+
+including the abacus plot to visualise this variation.
+
+![Supplementary Figure 1](figure/abacus.png)
+
+![Supplementary Figure 2](figure/sample_plot.png)

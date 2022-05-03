@@ -136,6 +136,45 @@ write.csv(data2, file = "data/epic_clean_randy.csv")
 
 
 ```{r}
+table0 <- data1 %>%
+  unique() %>%
+  dplyr::select(-id) %>%
+  mutate(
+    ethnic = case_when(ethnic == 1 ~ "Hispanic",
+                     ethnic == 2 ~ "Non-Hispanic"),
+    race = case_when(race == 1 ~ "White",
+                     race != 1 ~ "Other"),
+    sex = case_when(sex == "F" ~ "Female",
+                    sex == "M" ~ "Male"),
+    age_diff = age_max - age_min) %>% 
+  dplyr::select(
+         Genotype = genotype,
+         Gender = sex,
+         Race = race,
+         Ethnicity = ethnic,
+         "Visit number" = visitn,
+         "Age mean" = age_mean, 
+         "Age baseline" = age_min, 
+         "Age final" = age_max, 
+         "Follow up years" = age_diff,
+         "Height mean" = h_mean, 
+         "Height baseline" = h_min,
+         "Weight mean" = w_mean,
+         "Weight baseline" = w_min) %>% 
+  ## select all the variables for table1
+  tbl_summary() %>%
+  ## just display all the variables in one column
+  modify_header(label = "**Variable**") %>%
+  # update the column header
+  bold_labels() %>%
+  italicize_labels() %>%
+  as_flex_table() %>%
+  flextable::bold(part = "header") %>% 
+  ## auto adjust the column widths 
+  flextable::autofit()
+
+
+
 table1 <- data1 %>%
   unique() %>%
   dplyr::select(-id) %>%
@@ -180,6 +219,7 @@ table1 <- data1 %>%
 
 
 ```{r}
+table0
 table1
 
 ## save pptx -----------------------------------------------
@@ -187,6 +227,22 @@ table1
 flextable::save_as_pptx(
   table1, 
   path = "figure/01_table1.pptx")
+
+library(webshot)
+# webshot::install_phantomjs()
+
+flextable::save_as_image(table1, 
+              path = "figure/01_table1.png",
+              # zoom = 3, 
+              # expand = 10, 
+              webshot = "webshot")
+
+flextable::save_as_image(table0, 
+              path = "figure/01_table0.png",
+              # zoom = 3, 
+              # expand = 10, 
+              webshot = "webshot")
+# ?save_as_image
 ```
 
 
