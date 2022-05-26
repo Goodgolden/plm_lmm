@@ -133,22 +133,21 @@ Try spline model with 3 inner knots set at percentiles (quartiles) too
 and compare to the splines you had tried before. 
 
 ```{r}
-train <- here::here("data", "epic_clean_randy.csv") %>%
+train <- here::here("data", 
+                    "epic_clean_randy.csv") %>%
   read.csv(row.names = 1) %>% 
   mutate(id = as.factor(id)) %>%
   filter(group == "training")
 
-test <- here::here("data", "epic_clean_randy.csv") %>%
+test <- here::here("data", 
+                   "epic_clean_randy.csv") %>%
   read.csv(row.names = 1) %>%
   filter(group == "testing")
 
-baseline <- train %>% 
+basetest <- test %>% 
   group_by(id) %>% 
   arrange(time) %>% 
-  slice(1L) %>%
-  rename(ht_base = ht,
-         time_base = time) %>%
-  dplyr::select(id, ht_base, time_base)
+  slice(1L) 
 ```
 
 
@@ -294,6 +293,7 @@ bks32 <- brokenstick(formula = ht ~ time | id,
 est31_knots <- predict(bks31, 
                      x = "knots", 
                      group = train$id)
+
 est31_all <- predict(bks31, 
                    group = train$id)
 
@@ -303,6 +303,8 @@ est32_knots <- predict(bks32,
 est32_all <- predict(bks32, 
                    group = train$id)
 ```
+
+the biometrics paper,
 
 
 ```{r}
@@ -339,7 +341,9 @@ plot_bks1
 ```
 
 
-The estimated for 2 c(10, 12) and 3 c(10, 12, 115) knots
+The estimated for 2 **c(10, 12)** and 3 c(10, 12, 15) knots
+
+## try c(10, 13), c(10, 14) ---------------------
 
 ```{r fig.height=5, fig.width=5}
 plot_bks2 <- ggplot() +
@@ -363,6 +367,8 @@ plot_bks2 <- ggplot() +
               size = 0.5) +
   xlab("Age") +
   theme_bw()
+
+plot_bks2
 
 ```
 
@@ -412,7 +418,7 @@ bksn <- Kplot(K = Kk)
 bksn$plot
 ```
 
-```{r}
+```{r fig.height=3, fig.width=5}
 tag2_1 <- get_tag(fit = fit2_1)
 
 bks2_1 <- Kplot(K = c(10, 12))
@@ -424,7 +430,7 @@ grid.arrange(tag2_1$plot,
 ```
 
 
-```{r}
+```{r fig.height=3, fig.width=5}
 plot <- ggplot() +
   geom_line(data = train, 
               aes(x = time, 
@@ -458,7 +464,7 @@ Start drafting a description of the dataset using Moss and Rice’s papers:
 one paragraph to describe the study and a second to include descriptive statistics.   
  
 
-```{r}
+```{r fig.height=5, fig.width=5, include=FALSE}
 # install.packages("IrregLong")
 library(IrregLong)
 
@@ -492,10 +498,9 @@ subtrain <- train %>%
 ```
 
 
-```{r fig.height=2, fig.width=5}
-
+```{r fig.height=3, fig.width=5}
 abacus0 <- ggplot(subtrain, 
-       aes(y = id, x = time, 
+       aes(y = as.factor(id), x = time, 
            group = sex,
            fill = sex, color = sex)) +
   geom_point(alpha = 0.5, size = 3) + 
@@ -504,23 +509,32 @@ abacus0 <- ggplot(subtrain,
   xlab("Time") +
   ylab("ID")
 
+abacus0
+
 ggsave("figure/abacus.png")
 ```
 
 
-
-```{r fig.height=4, fig.width=5}
-ind_plot <- ggplot(subtrain, 
-       aes(y = ht, 
-           x = time, 
-           group = id,
-           col = sex)) +
+```{r fig.height=5, fig.width=5}
+ind_plot <- 
+  ggplot(subtrain, 
+         aes(y = ht, 
+             x = time, 
+             group = id,
+             col = sex)) +
   geom_point(size = 0.5) +
   geom_line() +
   theme_bw() +
   theme(legend.position = "none") +
   facet_wrap(id ~ sex, nrow = 5)
 
+ind_plot
+
 ggsave("figure/sample_plot.png")
 ```
+
+
+
+Dynamic Predictions in Bayesian Functional Joint Models for Longitudinal and Time-to-Event Data: An Application to Alzheimer’s Disease
+
 

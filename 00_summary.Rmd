@@ -1,0 +1,74 @@
+---
+title: "00_summary"
+author: "randy"
+date: "2022-05-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# [Dynamic Predictions in Bayesian Functional Joint Models for Longitudinal and Time-to-Event Data: An Application to Alzheimer’s Disease](https://pubmed.ncbi.nlm.nih.gov/28750578/)
+
+
+- a functional joint model to account for predictors in both longitudinal and survival submodels in the joint modeling framework.
+
+- develop a Bayesian approach for parameter estimation and a dynamic prediction framework for predicting the subjects' future outcome trajectories and risk of dementia, based on their scalar and functional measurements. T
+
+
+- Bayesian functional joint model provides a flexible framework to incorporate many features both in joint modeling of longitudinal and survival data and in functional data analysis. 
+
+
+
+## Joint model 
+
+- longitudinal
+
+- survival (cox ph)
+
+- link them using a common latent structure
+
+## Dynamic prediction
+
+dynamic personalized prediction of future; 
+the dynamic prediction frameworks is that the predictive measures can be dynamically updated 
+as additional longitudinal measurements become available for the target subjects
+
+$$
+y_i(t_{ij}) = m_i (t_{ij}) + \epsilon_{ij}\\
+m_i(t_{ij}) = \beta_0 + x_{ij}^T \beta + \int g^{(x)}_i (s) B^{(x)}(s) ds + z^T u_i,
+$$
+
+$$
+h_i(t) = h_0(t) \exp \{w^T_i \gamma + 
+\int_{S} g^{(w)}_i(s) B^{(w)}(s) ds + \alpha m_i(t)\}
+$$
+
+
+use functional principal component scores
+similar to Eigen-decomposition
+
+Score, Eigen-value, and Eigen-vector
+
+
+## Bayesian inference
+
+The key step for prediction is to obtain samples for subject N’s 
+random effect vector $u_N$ from its posterior distribution
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

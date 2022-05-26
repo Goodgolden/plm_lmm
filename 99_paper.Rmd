@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
+Disease populations, clinical practice, and healthcare systems are constantly evolving. This can result in clinical prediction models quickly becoming outdated and less accurate over time. A potential solution is to develop ‘dynamic’ prediction models capable of retaining accuracy by evolving over time in response to observed changes. [1](https://diagnprognres.biomedcentral.com/articles/10.1186/s41512-018-0045-2)
+
 The motivation for applying the broken stick model was to facilitate the statistical analysis and testing of critical ages in the onset of childhood development with extensions to multiple imputation (van Buuren 2018b).
 
 The broken stick model fits in the latter tradition, and features an intuitive parametrisation of each individual growth curves by a series of connected straight lines.
@@ -157,3 +159,7 @@ including the abacus plot to visualise this variation.
 ![Supplementary Figure 1](figure/abacus.png)
 
 ![Supplementary Figure 2](figure/sample_plot.png)
+
+
+
+The dataset was randomly split into a training (2/3, N=358) and a testing (1/3, N=180) cohort. 

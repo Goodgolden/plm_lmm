@@ -36,13 +36,18 @@ test <- here::here("data", "epic_clean_randy.csv") %>%
   read.csv(row.names = 1) %>%
   filter(group == "testing")
 
-baseline <- train %>% 
+base_train <- train %>% 
   group_by(id) %>% 
   arrange(time) %>% 
-  slice(1L) %>%
-  rename(ht_base = ht,
-         time_base = time) %>%
-  dplyr::select(id, ht_base, time_base)
+  slice(1L) 
+
+base_test <- test %>% 
+  group_by(id) %>% 
+  arrange(time) %>% 
+  slice(1L) 
+
+View(base_train)
+View(base_test)
 
 # View(train)
 # View(test)
