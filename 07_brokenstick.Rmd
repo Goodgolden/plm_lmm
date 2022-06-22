@@ -47,7 +47,7 @@ basetest <- test %>%
 
 ```{r}
 fit3 <- lme(ht ~ bs(time, 
-                      knots = c(5, 10, 12), 
+                      knots = c(5, 10, 12, 14), 
                       degree = 3,
                       intercept = FALSE)  +  genotype - 1,
               # control = ctrl,
@@ -79,7 +79,7 @@ specific time to select matches...
 ```{r}
 bks3 <- brokenstick(formula = ht ~ time|id, 
                     data = train,  
-                    knots = c(5, 10, 12))
+                    knots = c(5, 10, 12, 14))
 
 est3_knots <- predict(bks3, 
                      x = "knots", 
@@ -157,8 +157,6 @@ View(lb_data)
 
 
 ```{r eval=FALSE, include=TRUE}
-
-
 for (sbj in lb_data$id) {
   
   subject <- lb_data %>% filter(id == sbj)
